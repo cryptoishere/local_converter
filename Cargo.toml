@@ -1,0 +1,24 @@
+[package]
+name = "local_converter"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "crypto_converter"
+path = "src/lib.rs"
+
+[dependencies]
+rust_decimal = { version = "1.36", default-features = false }
+alloy-primitives = { version = "1.5.2", default-features = false }
+anyhow = "1.0.100"
+log = "0.4.29"
+
+arkecosystem-crypto = { git = "https://github.com/cryptoishere/rust-crypto.git", optional = true }
+arkecosystem-client = { git = "https://github.com/cryptoishere/rust-client.git", optional = true }
+
+[features]
+default = ["smartholdem"]
+smartholdem = [
+    "arkecosystem-crypto",
+    "arkecosystem-client",
+]
