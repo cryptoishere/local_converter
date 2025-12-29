@@ -10,15 +10,15 @@ use crate::traits::address::AddressUnit;
 
 mod directions;
 
-pub struct AddressService {
-    from: Box<dyn AddressUnit>,
-    to:  Box<dyn AddressUnit>,
+pub struct AddressService<'a> {
+    from: Box<dyn AddressUnit + 'a>,
+    to:  Box<dyn AddressUnit + 'a>,
 }
 
-impl AddressService {
+impl<'a> AddressService<'a> {
     pub fn new(
-        from:  &'static str,
-        to:  &'static str,
+        from:  &'a str,
+        to:  &'a str,
     ) -> Self {
         Self {
             from: Box::new(From::new(from)),
