@@ -1,4 +1,4 @@
-pub(crate) trait AddressUnit {
+pub(crate) trait AddressUnit: Send + Sync {
     fn validate(&self) -> anyhow::Result<bool>;
 
     fn get(&self) -> &str;

@@ -6,52 +6,52 @@ use arkecosystem_crypto::enums::Network;
 #[cfg(feature = "smartholdem")]
 use arkecosystem_crypto::identities::address;
 
-pub struct From<'ba> {
-    path: &'ba str,
+pub struct From {
+    path: String,
 }
 
-impl<'ba> From<'ba> {
-    pub fn new(addr: &'ba str) -> Self {
+impl From {
+    pub fn new(addr: impl Into<String>) -> Self {
         Self {
-            path: addr,
+            path: addr.into(),
         }
     }
 }
 
-impl<'ba> AddressUnit for From<'ba> {
+impl AddressUnit for From {
     fn validate(&self) -> anyhow::Result<bool> {
         #[cfg(feature = "smartholdem")]
-        let is_valid = address::validate(self.path, Some(Network::Mainnet.version()));
+        let is_valid = address::validate(&self.path, Some(Network::Mainnet.version()));
 
         #[cfg(not(feature = "smartholdem"))]
-        let is_valid = Ok(EtherAddress::is_strict_checksum(self.path));
+        let is_valid = Ok(EtherAddress::is_strict_checksum(&self.path));
 
         is_valid
     }
 
     fn get(&self) -> &str {
-        self.path
+        &self.path
     }
 }
 
-pub struct To<'ba> {
-    path: &'ba str,
+pub struct To {
+    path: String,
 }
 
-impl<'ba> To<'ba> {
-    pub fn new(addr: &'ba str) -> Self {
+impl To {
+    pub fn new(addr: impl Into<String>) -> Self {
         Self {
-            path: addr,
+            path: addr.into(),
         }
     }
 }
 
-impl<'ba> AddressUnit for To<'ba> {
+impl AddressUnit for To {
     fn validate(&self) -> anyhow::Result<bool> {
-        Ok(EtherAddress::is_valid_eth_address(self.path))
+        Ok(EtherAddress::is_valid_eth_address(&self.path))
     }
 
     fn get(&self) -> &str {
-        self.path
+        &self.path
     }
 }
