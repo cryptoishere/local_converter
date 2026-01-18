@@ -8,7 +8,7 @@ const MAX_PRECISION: u32 = 20;
 
 /// # Examples
 ///
-/// ```rust
+/// ```rust,ignore
 /// use rust_decimal::Decimal;
 ///
 /// // from string

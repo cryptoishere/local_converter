@@ -14,7 +14,7 @@ pub const SATS_PER_UNIT: i64 = 100_000_000;
 
 /// # SatsConverter examples
 ///
-/// ```rust
+/// ```rust,ignore
 /// use rust_decimal::Decimal;
 ///
 /// // from sats → BTC

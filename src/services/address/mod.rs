@@ -1,5 +1,4 @@
 use anyhow::anyhow;
-use alloy_primitives::hex::FromHexError;
 use alloy_primitives::Address;
 
 use std::str::FromStr;
@@ -54,21 +53,15 @@ impl AddressService {
         Ok(())
     }
 
-    pub fn strict_validate(&self) -> anyhow::Result<Address, FromHexError> {
-        let addr = match EtherAddress::is_strict_checksum(self.to.get()) {
-            true => {
-                Address::from_str(self.to.get())
-            }
-            false => {
-                let addr = Address::from_str(self.to.get())?;
+    pub fn strict_validate(&self) -> anyhow::Result<Address> {
+        let raw = self.to.get();
 
-                if EtherAddress::is_strict_checksum(&addr.to_string()) {
-                    return Err(FromHexError::InvalidStringLength);
-                }
+        let addr = Address::from_str(raw)
+            .map_err(|e| anyhow!("Invalid ETH address: {e}"))?;
 
-                Ok(addr)
-            }
-        }?;
+        if !EtherAddress::is_strict_checksum(raw) {
+            return Err(anyhow!("Address is not EIP-55 checksummed"));
+        }
 
         Ok(addr)
     }
