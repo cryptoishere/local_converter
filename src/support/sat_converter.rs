@@ -4,8 +4,10 @@ use rust_decimal::prelude::ToPrimitive;
 use std::ops::{Add, Sub};
 use std::ops::{Mul, Div};
 
+#[allow(dead_code)]
 const BTC_DECIMALS: u32 = 8;
 pub const STH_DECIMALS: u32 = 8;
+#[allow(dead_code)]
 const USDT_DECIMALS: u32 = 8;
 
 pub const SATS_PER_UNIT: i64 = 100_000_000;
