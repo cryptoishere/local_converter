@@ -99,6 +99,11 @@ impl MoneyAmount {
     pub fn is_zero(&self) -> bool {
         self.value.is_zero()
     }
+
+    /// Check if the amount is strictly positive (> 0)
+    pub fn is_positive(&self) -> bool {
+        self.value > Decimal::ZERO
+    }
 }
 
 impl Add for MoneyAmount {
