@@ -37,10 +37,6 @@ impl<'p> BankerService<'p> {
         // Pre-calculated user awared price amount
         let x_min_receive = MoneyAmount::from_str(min_receive).ok_or(anyhow!("Invalid min_receive amount"))?;
 
-        log::debug!("exchange_price {}", x_exchange_price.to_string_fixed());
-        log::debug!("expected_receive {}", x_expected_receive.to_string_fixed());
-        log::debug!("min_receive {}", x_min_receive.to_string_fixed());
-
         Ok(Self {
             sats_amount,
             exchange_price,

@@ -1,4 +1,5 @@
 use rust_decimal::Decimal;
+use rust_decimal::prelude::ToPrimitive;
 use std::str::FromStr;
 use std::cmp::Ordering;
 use std::ops::{Add, Sub};
@@ -73,6 +74,19 @@ impl MoneyAmount {
     /// String representation (always 8 decimals)
     pub fn to_string_fixed(&self) -> String {
         format!("{:.*}", MONEY_SCALE as usize, self.value)
+    }
+
+    /// Returns the underlying integer representation (scaled by 10^8).
+    pub fn to_raw(self) -> Option<i128> {
+        self.value
+            .checked_mul(Decimal::from(100_000_000u64))?
+            .trunc()
+            .to_i128()
+    }
+
+    /// Creates a MoneyAmount from a raw integer scaled by 10^8.
+    pub fn from_raw(raw: i128) -> Option<Self> {
+        Self::from_decimal(Decimal::from_i128_with_scale(raw, MONEY_SCALE))
     }
 
     /// Validate range (inclusive)
