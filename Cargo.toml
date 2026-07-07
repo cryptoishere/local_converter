@@ -9,16 +9,10 @@ path = "src/lib.rs"
 
 [dependencies]
 rust_decimal = { version = "1.42.1", default-features = false, features = ["maths"] }
+bs58 = "0.5.1"
 alloy-primitives = { version = "1.6.0", default-features = false }
 anyhow = "1.0.102"
 log = "0.4.20"
 
-arkecosystem-crypto = { git = "https://github.com/cryptoishere/rust-crypto.git", optional = true }
-arkecosystem-client = { git = "https://github.com/cryptoishere/rust-client.git", optional = true }
-
-[features]
-default = ["smartholdem"]
-smartholdem = [
-    "arkecosystem-crypto",
-    # "arkecosystem-client",
-]
+arkecosystem-crypto = { git = "https://github.com/cryptoishere/rust-crypto.git" }
+arkecosystem-client = { git = "https://github.com/cryptoishere/rust-client.git" }
