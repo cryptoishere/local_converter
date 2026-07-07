@@ -1,4 +1,4 @@
-pub(crate) trait AddressUnit: Send + Sync + Sized {
+pub trait AddressUnit: Send + Sync + Sized {
     type Address;
 
     fn new(addr: impl Into<String>) -> Self;

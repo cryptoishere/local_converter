@@ -1,6 +1,5 @@
 use crate::traits::address::AddressUnit;
 
-#[allow(private_bounds)]
 pub struct AddressService<F, T>
 where
     F: AddressUnit,
@@ -10,7 +9,6 @@ where
     to: T,
 }
 
-#[allow(private_bounds)]
 impl<F, T> AddressService<F, T>
 where
     F: AddressUnit,
@@ -38,7 +36,7 @@ where
         Ok(())
     }
 }
-#[allow(private_bounds)]
+
 impl<F, T> AddressService<F, T>
 where
     F: AddressUnit,
@@ -52,12 +50,10 @@ where
         self.to.get()
     }
 
-    #[allow(private_interfaces)]
     pub fn from(&self) -> anyhow::Result<F::Address> {
         self.from.get_as_type()
     }
 
-    #[allow(private_interfaces)]
     pub fn to(&self) -> anyhow::Result<T::Address> {
         self.to.get_as_type()
     }
