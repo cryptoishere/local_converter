@@ -17,9 +17,9 @@ pub struct BankerService<'p> {
     #[allow(dead_code)]
     min_receive: &'p str,
     sats: SatsConverter,
-    x_exchange_price: MoneyAmount,
-    x_expected_receive: MoneyAmount,
-    x_min_receive: MoneyAmount,
+    x_exchange_price: MoneyAmount<2>,
+    x_expected_receive: MoneyAmount<6>,
+    x_min_receive: MoneyAmount<6>,
     min: Option<i64>,
     max: Option<i64>,
 }
@@ -72,20 +72,20 @@ impl<'p> BankerService<'p> {
         self.x_exchange_price.as_decimal()
     }
 
-    pub fn calc<F: FnOnce(i64, Decimal) -> Option<MoneyAmount>>(&self, calc: F) -> anyhow::Result<MoneyAmount> {
+    pub fn calc<F: FnOnce(i64, Decimal) -> Option<MoneyAmount<8>>>(&self, calc: F) -> anyhow::Result<MoneyAmount<8>> {
         calc(self.bid_amount(), self.price_per_unit())
             .ok_or(anyhow!("Calculation failed"))
     }
 
-    pub fn get_exchange_price(&self) -> MoneyAmount {
+    pub fn get_exchange_price(&self) -> MoneyAmount<2> {
         self.x_exchange_price
     }
 
-    pub fn get_expected_price(&self) -> MoneyAmount {
+    pub fn get_expected_price(&self) -> MoneyAmount<6> {
         self.x_expected_receive
     }
 
-    pub fn get_minimum_price(&self) -> MoneyAmount {
+    pub fn get_minimum_price(&self) -> MoneyAmount<6> {
         self.x_min_receive
     }
 }
