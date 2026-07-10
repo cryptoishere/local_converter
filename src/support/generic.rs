@@ -4,7 +4,6 @@ use std::str::FromStr;
 use std::cmp::Ordering;
 use std::ops::{Add, Sub};
 
-const MONEY_SCALE: u32 = 8;
 const MAX_PRECISION: u32 = 20;
 
 /// # Examples
@@ -24,8 +23,8 @@ const MAX_PRECISION: u32 = 20;
 /// let db_value: Decimal = amount.as_decimal();
 /// ```
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct MoneyAmount {
-    value: Decimal, // always scale = 8
+pub struct MoneyAmount<const SCALE: u32> {
+    value: Decimal,
 }
 
 impl PartialOrd for MoneyAmount {
@@ -34,14 +33,14 @@ impl PartialOrd for MoneyAmount {
     }
 }
 
-impl MoneyAmount {
+impl<const SCALE: u32> MoneyAmount<SCALE> {
     /// Create from Decimal, enforcing scale and precision
     pub fn from_decimal(mut value: Decimal) -> Option<Self> {
         // Normalize scale (round half-up to 8 decimals)
-        value = value.round_dp(MONEY_SCALE);
+        value = value.round_dp(SCALE);
 
         // Enforce scale exactly
-        if value.scale() > MONEY_SCALE {
+        if value.scale() > SCALE {
             return None;
         }
 
@@ -53,7 +52,7 @@ impl MoneyAmount {
             .filter(|c| c.is_ascii_digit())
             .count();
 
-        if integer_digits > (MAX_PRECISION - MONEY_SCALE) as usize {
+        if integer_digits > (MAX_PRECISION - SCALE) as usize {
             return None;
         }
 
@@ -73,20 +72,18 @@ impl MoneyAmount {
 
     /// String representation (always 8 decimals)
     pub fn to_string_fixed(&self) -> String {
-        format!("{:.*}", MONEY_SCALE as usize, self.value)
+        format!("{:.*}", SCALE as usize, self.value)
     }
 
-    /// Returns the underlying integer representation (scaled by 10^8).
+    /// Returns the underlying integer representation (scaled by 10^SCALE).
     pub fn to_raw(self) -> Option<i128> {
-        self.value
-            .checked_mul(Decimal::from(100_000_000u64))?
-            .trunc()
-            .to_i128()
+        let factor = Decimal::from(10u64.pow(SCALE));
+        self.value.checked_mul(factor)?.trunc().to_i128()
     }
 
     /// Creates a MoneyAmount from a raw integer scaled by 10^8.
     pub fn from_raw(raw: i128) -> Option<Self> {
-        Self::from_decimal(Decimal::from_i128_with_scale(raw, MONEY_SCALE))
+        Self::from_decimal(Decimal::from_i128_with_scale(raw, SCALE))
     }
 
     /// Validate range (inclusive)
