@@ -27,7 +27,7 @@ pub struct MoneyAmount<const SCALE: u32> {
     value: Decimal,
 }
 
-impl PartialOrd for MoneyAmount<SCALE> {
+impl<const SCALE: u32> PartialOrd for MoneyAmount<SCALE> {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         self.value.partial_cmp(&other.value)
     }
@@ -117,7 +117,7 @@ impl<const SCALE: u32> MoneyAmount<SCALE> {
     }
 }
 
-impl Add for MoneyAmount<SCALE> {
+impl<const SCALE: u32> Add for MoneyAmount<SCALE> {
     type Output = Option<Self>;
 
     fn add(self, rhs: Self) -> Self::Output {
@@ -125,7 +125,7 @@ impl Add for MoneyAmount<SCALE> {
     }
 }
 
-impl Sub for MoneyAmount<SCALE> {
+impl<const SCALE: u32> Sub for MoneyAmount<SCALE> {
     type Output = Option<Self>;
 
     fn sub(self, rhs: Self) -> Self::Output {
@@ -133,7 +133,7 @@ impl Sub for MoneyAmount<SCALE> {
     }
 }
 
-impl MoneyAmount<SCALE> {
+impl<const SCALE: u32> MoneyAmount<SCALE> {
     pub fn checked_add(self, rhs: Self) -> Result<Self, &'static str> {
         MoneyAmount::from_decimal(self.value + rhs.value)
             .ok_or("overflow or precision error")
