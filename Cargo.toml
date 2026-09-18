@@ -8,11 +8,11 @@ name = "crypto_converter"
 path = "src/lib.rs"
 
 [dependencies]
-rust_decimal = { version = "1.42.1", default-features = false, features = ["maths"] }
+rust_decimal = { version = "1.43.0", default-features = false, features = ["maths"] }
 bs58 = "0.5.1"
 alloy-primitives = { version = "1.6.0", default-features = false }
-anyhow = "1.0.102"
-log = "0.4.20"
+anyhow = "1"
+log = "0.4"
 
 arkecosystem-crypto = { git = "https://github.com/cryptoishere/rust-crypto.git" }
 arkecosystem-client = { git = "https://github.com/cryptoishere/rust-client.git" }
