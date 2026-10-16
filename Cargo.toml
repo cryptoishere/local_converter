@@ -10,7 +10,7 @@ path = "src/lib.rs"
 [dependencies]
 rust_decimal = { version = "1.43.0", default-features = false, features = ["maths"] }
 bs58 = "0.5.1"
-alloy-primitives = { version = "1.6.0", default-features = false }
+alloy-primitives = { version = "1.7.3", default-features = false }
 anyhow = "1"
 log = "0.4"
 
